@@ -1,4 +1,4 @@
-package com.education.wztelegrambot.entities.dtos;
+package com.education.wztelegrambot.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

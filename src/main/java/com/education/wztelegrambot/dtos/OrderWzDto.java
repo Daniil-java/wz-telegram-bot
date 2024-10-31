@@ -1,4 +1,4 @@
-package com.education.wztelegrambot.entities.dtos;
+package com.education.wztelegrambot.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,39 +20,39 @@ public class OrderWzDto {
     private List<Object> files;
     private long freelancerEarn;
     private boolean hasUnreadMark;
-    private boolean archived;
-    private boolean chatClosed;
+    private boolean isArchived;
+    private boolean isChatClosed;
 
     @JsonProperty("isInsolvoOrder")
-    private boolean insolvoOrder;
+    private boolean isInsolvoOrder;
 
     @JsonProperty("isOfferOrder")
-    private boolean offerOrder;
+    private boolean isOfferOrder;
 
     @JsonProperty("isPremium")
-    private boolean premium;
+    private boolean isPremium;
 
     @JsonProperty("isPremiumAvailable")
-    private boolean premiumAvailable;
+    private boolean isPremiumAvailable;
 
     @JsonProperty("isRaisePriceAvailable")
-    private boolean raisePriceAvailable;
+    private boolean isRaisePriceAvailable;
 
     @JsonProperty("isTestOptionSelected")
-    private boolean testOptionSelected;
+    private boolean isTestOptionSelected;
 
     @JsonProperty("isTinkoffOrder")
-    private boolean tinkoffOrder;
+    private boolean isTinkoffOrder;
 
     @JsonProperty("isYooKassaOrder")
-    private boolean yooKassaOrder;
+    private boolean isYooKassaOrder;
 
     private long modified;
     private long pinIdAtHistory;
     private long price;
-    private boolean showAcceptTaskButton;
-    private boolean showLeaveFeedbackButton;
-    private boolean showOfferAcceptMessage;
+    private boolean isShowAcceptTaskButton;
+    private boolean isShowLeaveFeedbackButton;
+    private boolean isShowOfferAcceptMessage;
     private long status;
 
     @Override

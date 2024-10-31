@@ -1,8 +1,8 @@
 package com.education.wztelegrambot.services;
 
 import com.education.wztelegrambot.entities.HeaderData;
-import com.education.wztelegrambot.entities.dtos.OrderDataWzDto;
-import com.education.wztelegrambot.entities.dtos.OrderWzDto;
+import com.education.wztelegrambot.dtos.OrderDataWzDto;
+import com.education.wztelegrambot.dtos.OrderWzDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

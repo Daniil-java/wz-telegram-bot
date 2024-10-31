@@ -1,6 +1,6 @@
 package com.education.wztelegrambot.entities;
 
-import com.education.wztelegrambot.entities.dtos.OrderWzDto;
+import com.education.wztelegrambot.dtos.OrderWzDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
