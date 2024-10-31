@@ -7,7 +7,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +25,19 @@ public class UserEntity {
     private String firstname;
     private String lastname;
     private String languageCode;
-    private String info;
     @CreationTimestamp
     private LocalDateTime created;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<HeaderData> headers = new ArrayList<>();
+
+    public HeaderData getAgreedHeader() {
+        for (HeaderData headerData: headers) {
+            if (headerData.getHeaderStatus().equals(HeaderStatus.OK)) {
+                return headerData;
+            }
+        }
+        return null;
+    }
 
 }

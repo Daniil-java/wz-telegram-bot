@@ -1,6 +1,7 @@
 package com.education.wztelegrambot.telegram;
 
 import com.education.wztelegrambot.telegram.configurations.TelegramBotKeyComponent;
+import com.education.wztelegrambot.telegram.facades.TelegramFacade;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.name}")
     private String botName;
+    @Autowired
+    private TelegramFacade telegramFacade;
 
     public TelegramBot(TelegramBotKeyComponent telegramBotKeyComponent) {
         super(telegramBotKeyComponent.getKey());
@@ -24,7 +27,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.info(update.toString());
+        telegramFacade.handleUpdate(update);
     }
 
     public void sendMessage(BotApiMethod sendMessage) {
