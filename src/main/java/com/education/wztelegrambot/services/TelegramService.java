@@ -1,5 +1,6 @@
 package com.education.wztelegrambot.services;
 
+import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,27 @@ public class TelegramService {
                         .disableWebPagePreview(true)
                         .build()
         );
+    }
+
+    public Message sendReturnedMessage(long chatId, String text) {
+        return telegramBot.sendReturnedMessage(
+                SendMessage.builder()
+                        .chatId(chatId)
+                        .text(text)
+                        .parseMode(ParseMode.HTML)
+                        .disableWebPagePreview(true)
+                        .build()
+        );
+    }
+
+    public Message sendOrder(Order order) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<strong>");
+        builder.append(order.getSubject()).append("\n");
+        builder.append("</strong>");
+        builder.append(order.getDescription());
+
+        return sendReturnedMessage(order.getUser().getTelegramId(), builder.toString());
     }
 
 }

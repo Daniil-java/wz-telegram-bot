@@ -7,5 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ProcessingStatus {
     CREATED,
-    ANALYZED;
+    ANALYZED,
+    NOTIFICATED,
+    NOTIFICATION_ERROR;
 }
