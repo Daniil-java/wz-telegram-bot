@@ -16,13 +16,13 @@ public class SchedulerService {
     private final OpenAiScheduleProcessor openAiScheduleProcessor;
     private final NotificationScheduleProcessor notificationScheduleProcessor;
 
-//    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     public void ordersCheckUpdateScheduleProcessor() {
         log.info(ordersCheckUpdateScheduleProcessor.getSchedulerName() + " started working!");
         ordersCheckUpdateScheduleProcessor.process();
     }
 
-//    @Scheduled(cron = "*/45 * * * * *")
+    @Scheduled(cron = "*/45 * * * * *")
     public void openAiScheduleProcessor() {
         log.info(openAiScheduleProcessor.getSchedulerName() + "started working");
         openAiScheduleProcessor.process();

@@ -32,15 +32,42 @@ public class OpenAiService {
                         "Название заказа: %s\n" +
                         "Описание: %s", order.getSubject(), order.getDescription());
 
-        //Отправка запроса и получение ответа OpenAI
-        OpenAiChatCompletionResponse response = openAiFeignClient.generate(
+        return fetchResponseAndReadJson(request, OpenAiAnalyzeResponseDto.class);
+
+    }
+
+    public String generateCoverLetter(Order order, String userInfo) {
+        //Создание текста запроса для OpenAI
+        String request = String.format(
+                "Я нашёл задачу на сайте для фриланса. Я отправлю тебе название и описание задачи, а также информацию о себе, своих навыках и опыте. \n" +
+                        "Я хочу, чтобы ты составил сопроводительное письмо, от моего имени - заказчику. В этом письме ты должен поздороваться, кратко представить меня и задать вопросы по задаче, если в описании не хватает информации. \n" +
+                        "После письма напиши уже от себя, на что мне стоит обратить внимание. Например на возможность незаконной деятельности, при выполнении данной задачи или что-то другое.\n" +
+                        "Название: %s\n" +
+                        "Описание: %s\n" +
+                        "Длительность в милисек.: %s" +
+                        "Награда за задание в руб: %s" +
+                        "Обо мне: %s",
+                order.getSubject(), order.getDescription(), order.getDuration(), order.getPrice(), userInfo);
+
+        return fetchResponse(request);
+    }
+
+    //Отправка запроса и получение ответа OpenAI
+    private String fetchResponse(String request) {
+        return getContent(openAiFeignClient.generate(
                 "Bearer " + openAiKeyConfiguration.getKey(),
                 OpenAiChatCompletionRequest.makeRequest(request)
-        );
+        ));
+    }
 
-        //Получения содержания сообщения
-        String content = response.getChoices().get(0).getMessage().getContent();
+    // Читаем JSON в указанный тип T
+    private<T> T fetchResponseAndReadJson(String request, Class<T> responseType) throws JsonProcessingException {
+        return new ObjectMapper().readValue(fetchResponse(request), responseType);
+    }
 
-        return new ObjectMapper().readValue(content, OpenAiAnalyzeResponseDto.class);
+
+    //Получения содержания сообщения
+    public static String getContent(OpenAiChatCompletionResponse response) {
+        return OpenAiChatCompletionResponse.getContent(response);
     }
 }

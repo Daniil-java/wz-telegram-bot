@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @AllArgsConstructor
 public class ErrorUpdateHandler implements UpdateHandler {
     private final static String RESPONSE = "Данный запрос непредусмотрен сервисом.";
+    public final static String ERROR_HANDLER_COMMAND = "/about";
     private final TelegramService telegramService;
     @Override
     public void handle(Update update, UserEntity userEntity) {
@@ -33,6 +34,6 @@ public class ErrorUpdateHandler implements UpdateHandler {
 
     @Override
     public String getHandlerListName() {
-        return ErrorUpdateHandler.class.getSimpleName();
+        return ERROR_HANDLER_COMMAND;
     }
 }
