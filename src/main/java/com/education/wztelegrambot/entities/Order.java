@@ -26,6 +26,10 @@ public class Order {
     private boolean chatClosed;
     private long price;
     private long status;
+    private boolean isDevelopment;
+    private boolean isSolvableByAi;
+    @Enumerated(EnumType.STRING)
+    private ProcessingStatus processingStatus;
 
     public static Order convert(OrderWzDto orderWzDto) {
         return new Order()
