@@ -26,8 +26,7 @@ public class NotificationScheduleProcessor implements ScheduleProcessor {
 
         for (Order order: orderList) {
             //Отправка сообщения пользователю и обработка результата
-            if (telegramService.sendOrder(order) != null)
-            {
+            if (telegramService.sendOrder(order) != null) {
                 //Обработка, в случае удачного отправления сообщения
                 order.setProcessingStatus(ProcessingStatus.NOTIFICATED);
             } else {
@@ -43,7 +42,7 @@ public class NotificationScheduleProcessor implements ScheduleProcessor {
             }
             //Сохранение состояния заказа
             orderService.save(order);
-            ThreadUtil.sleep(1000);
+            ThreadUtil.sleep(100);
         }
 
     }
