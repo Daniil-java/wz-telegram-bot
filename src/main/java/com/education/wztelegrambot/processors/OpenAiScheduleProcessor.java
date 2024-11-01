@@ -19,7 +19,7 @@ public class OpenAiScheduleProcessor implements ScheduleProcessor {
     @Override
     public void process() {
         //Загрузка всех необработанных OpenAI заказов
-        List<Order> orderList = orderService.getOrdersForAnalyze();
+        List<Order> orderList = orderService.getOrdersForAnalysis();
         log.info("Count of unanalyzed orders: {}", orderList.size());
 
         //Счетчик выброшенных исключений

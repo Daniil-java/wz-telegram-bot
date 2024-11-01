@@ -56,7 +56,7 @@ public class OrderService {
         );
     }
 
-    public List<Order> getOrdersForAnalyze() {
+    public List<Order> getOrdersForAnalysis() {
         return orderRepository.findAllByProcessingStatus(ProcessingStatus.CREATED);
     }
 }
