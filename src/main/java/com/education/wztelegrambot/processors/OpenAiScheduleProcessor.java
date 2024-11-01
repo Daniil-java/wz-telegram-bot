@@ -2,6 +2,7 @@ package com.education.wztelegrambot.processors;
 
 import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.services.OrderService;
+import com.education.wztelegrambot.telegram.utils.ThreadUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class OpenAiScheduleProcessor implements ScheduleProcessor {
             try {
                 //Обработка заказа и сохранение
                 orderService.analyzeAndUpdateOrder(order);
+                ThreadUtil.sleep(100);
             } catch (JsonProcessingException e) {
                 log.error("OpenAI Error!");
             }

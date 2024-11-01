@@ -31,6 +31,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<HeaderData> headers = new ArrayList<>();
 
+
     public HeaderData getAgreedHeader() {
         for (HeaderData headerData: headers) {
             if (headerData.getHeaderStatus().equals(HeaderStatus.OK)) {

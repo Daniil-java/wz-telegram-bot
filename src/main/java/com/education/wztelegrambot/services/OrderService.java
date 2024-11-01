@@ -34,8 +34,7 @@ public class OrderService {
                 for (OrderWzDto orderWzDto: orderWzDtoList) {
                     if (!orderRepository.findByWzId(orderWzDto.getId()).isPresent()) {
                         orderRepository.save(Order.convert(orderWzDto)
-                                .setProcessingStatus(ProcessingStatus.CREATED)
-                        );
+                                .setProcessingStatus(ProcessingStatus.CREATED));
                     }
                 }
             }
@@ -58,5 +57,13 @@ public class OrderService {
 
     public List<Order> getOrdersForAnalysis() {
         return orderRepository.findAllByProcessingStatus(ProcessingStatus.CREATED);
+    }
+
+    public List<Order> getOrdersForNotification() {
+        return orderRepository.findAllByProcessingStatus(ProcessingStatus.ANALYZED);
+    }
+
+    public Order save(Order order) {
+        return orderRepository.save(order);
     }
 }

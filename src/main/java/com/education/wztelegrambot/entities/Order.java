@@ -31,6 +31,13 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private ProcessingStatus processingStatus;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @Column(name = "notification_attempt_count")
+    private int notificationAttemptCount;
+
     public static Order convert(OrderWzDto orderWzDto) {
         return new Order()
                 .setWzId(orderWzDto.getId())
