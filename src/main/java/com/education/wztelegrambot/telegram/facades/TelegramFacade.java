@@ -45,7 +45,7 @@ public class TelegramFacade {
         } else {
             request = update.getMessage().getText();
         }
-        UpdateHandler currentUpdateHandler = map.get(request.split(" ")[0]);
+        UpdateHandler currentUpdateHandler = map.get(request.split("!#!")[0]);
         return currentUpdateHandler == null ? map.get(ErrorUpdateHandler.class.getSimpleName()) : currentUpdateHandler;
 
     }

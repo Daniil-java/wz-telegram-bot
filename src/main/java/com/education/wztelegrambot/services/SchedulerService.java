@@ -1,5 +1,6 @@
 package com.education.wztelegrambot.services;
 
+import com.education.wztelegrambot.processors.OpenAiScheduleProcessor;
 import com.education.wztelegrambot.processors.OrdersCheckUpdateScheduleProcessor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +12,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SchedulerService {
     private final OrdersCheckUpdateScheduleProcessor ordersCheckUpdateScheduleProcessor;
+    private final OpenAiScheduleProcessor openAiScheduleProcessor;
 
     @Scheduled(cron = "*/30 * * * * *")
     public void ordersCheckUpdateScheduleProcessor() {
-        log.info(ordersCheckUpdateScheduleProcessor.getSchedulerName() + " started working");
+        log.info(ordersCheckUpdateScheduleProcessor.getSchedulerName() + " started working!");
         ordersCheckUpdateScheduleProcessor.process();
+    }
+
+    @Scheduled(cron = "*/45 * * * * *")
+    public void openAiScheduleProcessor() {
+        log.info(openAiScheduleProcessor.getSchedulerName() + "started working");
+        openAiScheduleProcessor.process();
     }
 }
