@@ -55,10 +55,10 @@ public class TelegramService {
         builder.append(order.getDescription());
 
         return sendReturnedMessage(order.getUser().getTelegramId(), builder.toString(),
-                getInlineMessageButtonLetterGenerate(order.getId()), null);
+                getOrderButtons(order.getId()), null);
     }
 
-    private InlineKeyboardMarkup getInlineMessageButtonLetterGenerate(long orderId) {
+    private InlineKeyboardMarkup getOrderButtons(long orderId) {
         String callbackCommand = CoverLetterCallbackUpdateHandler.REQUEST_HANDLER_COMMAND;
         String delimiter = TelegramBot.DELIMITER;
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

@@ -45,7 +45,7 @@ public class CoverLetterCallbackUpdateHandler implements UpdateHandler{
                     (chatId, coverLetter, null, replyMessageId) != null) {
 
                 //Изменение статуса заказа
-                orderService.orderSetApplyById(orderId);
+                orderService.setOrderAppliedById(orderId);
             } else {
 
                 //Сообщение об ошибке, в случае неудачи генерации письма
@@ -58,7 +58,7 @@ public class CoverLetterCallbackUpdateHandler implements UpdateHandler{
             long orderId = Long.parseLong(decision.substring(REJECTED_COMMAND.length()));
 
             //Изменение статуса заказа
-            orderService.orderSetRejectById(orderId);
+            orderService.setOrderRejectedById(orderId);
         }
     }
 

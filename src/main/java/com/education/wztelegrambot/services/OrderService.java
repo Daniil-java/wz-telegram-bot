@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -68,21 +67,17 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void orderSetApplyById(long orderId) {
+    public void setOrderAppliedById(long orderId) {
         orderRepository.updateStatusById(orderId, ProcessingStatus.APPLIED);
     }
 
-    public void orderSetRejectById(long orderId) {
+    public void setOrderRejectedById(long orderId) {
         orderRepository.updateStatusById(orderId, ProcessingStatus.REJECTED);
     }
 
     public String fetchGenerateCoverLetter(long orderId, String info) {
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
-        if (optionalOrder.isPresent()) {
-            Order order = optionalOrder.get();
-            return openAiService.generateCoverLetter(order, info);
-        } else {
-            return null;
-        }
+        return orderRepository.findById(orderId)
+                .map(order -> openAiService.generateCoverLetter(order, info))
+                .orElse(null);
     }
 }
