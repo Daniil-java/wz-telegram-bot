@@ -21,6 +21,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private TelegramFacade telegramFacade;
 
+    public final static String DELIMITER = "!#!";
+
     public TelegramBot(TelegramBotKeyComponent telegramBotKeyComponent) {
         super(telegramBotKeyComponent.getKey());
     }

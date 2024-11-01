@@ -9,5 +9,7 @@ public enum ProcessingStatus {
     CREATED,
     ANALYZED,
     NOTIFICATED,
-    NOTIFICATION_ERROR;
+    NOTIFICATION_ERROR,
+    APPLIED,
+    REJECTED;
 }

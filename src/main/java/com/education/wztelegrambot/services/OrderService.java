@@ -66,4 +66,18 @@ public class OrderService {
     public Order save(Order order) {
         return orderRepository.save(order);
     }
+
+    public void setOrderAppliedById(long orderId) {
+        orderRepository.updateStatusById(orderId, ProcessingStatus.APPLIED);
+    }
+
+    public void setOrderRejectedById(long orderId) {
+        orderRepository.updateStatusById(orderId, ProcessingStatus.REJECTED);
+    }
+
+    public String fetchGenerateCoverLetter(long orderId, String info) {
+        return orderRepository.findById(orderId)
+                .map(order -> openAiService.generateCoverLetter(order, info))
+                .orElse(null);
+    }
 }

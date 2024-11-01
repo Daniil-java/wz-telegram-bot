@@ -2,6 +2,7 @@ package com.education.wztelegrambot.telegram.facades;
 
 import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.services.UserService;
+import com.education.wztelegrambot.telegram.TelegramBot;
 import com.education.wztelegrambot.telegram.handlers.ErrorUpdateHandler;
 import com.education.wztelegrambot.telegram.handlers.UpdateHandler;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class TelegramFacade {
         } else {
             request = update.getMessage().getText();
         }
-        UpdateHandler currentUpdateHandler = map.get(request.split("!#!")[0]);
+        UpdateHandler currentUpdateHandler = map.get(request.split(TelegramBot.DELIMITER)[0]);
         return currentUpdateHandler == null ? map.get(ErrorUpdateHandler.class.getSimpleName()) : currentUpdateHandler;
 
     }
