@@ -50,13 +50,13 @@ public class OrderService {
         //Запрос к OpenAI на анализ заказа
         OpenAiAnalyzeResponseDto openAiAnalyzeResponseDto = openAiService.analyzeOrder(order);
         return orderRepository.save(order
-                .setDevelopment(openAiAnalyzeResponseDto.isDevelopment())
-                .setSolvableByAi(openAiAnalyzeResponseDto.isSolvableByAi())
+                .setDevelopment(openAiAnalyzeResponseDto.getIsDevelopment())
+                .setSolvableByAi(openAiAnalyzeResponseDto.getIsSolvableByAi())
                 .setProcessingStatus(ProcessingStatus.ANALYZED)
         );
     }
 
-    public List<Order> getAllNotAnalyzedOrders() {
+    public List<Order> getOrdersForAnalyze() {
         return orderRepository.findAllByProcessingStatus(ProcessingStatus.CREATED);
     }
 }

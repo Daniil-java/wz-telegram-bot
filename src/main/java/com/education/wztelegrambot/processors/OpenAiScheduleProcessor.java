@@ -19,21 +19,21 @@ public class OpenAiScheduleProcessor implements ScheduleProcessor {
     @Override
     public void process() {
         //Загрузка всех необработанных OpenAI заказов
-        List<Order> orderList = orderService.getAllNotAnalyzedOrders();
+        List<Order> orderList = orderService.getOrdersForAnalyze();
         log.info("Count of unanalyzed orders: {}", orderList.size());
 
         //Счетчик выброшенных исключений
         int countException = 0;
         for (Order order: orderList) {
             if (countException > MAX_EXCEPTION) {
-                log.error("OpenAiScheduleProcessor: terminated due to errors");
+                log.error("Terminated due to errors!");
                 break;
             }
             try {
                 //Обработка заказа и сохранение
                 orderService.analyzeAndUpdateOrder(order);
             } catch (JsonProcessingException e) {
-                log.error("OpenAiScheduleProcessor: OpenAI Error!");
+                log.error("OpenAI Error!");
             }
         }
     }

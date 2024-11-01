@@ -41,11 +41,6 @@ public class OpenAiService {
         //Получения содержания сообщения
         String content = response.getChoices().get(0).getMessage().getContent();
 
-        //Инициализация маппера
-        ObjectMapper objectMapper = new ObjectMapper();
-        //Конфигурация маппера для корректной обработки полей со значением false
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        return objectMapper.readValue(content, OpenAiAnalyzeResponseDto.class);
+        return new ObjectMapper().readValue(content, OpenAiAnalyzeResponseDto.class);
     }
 }
