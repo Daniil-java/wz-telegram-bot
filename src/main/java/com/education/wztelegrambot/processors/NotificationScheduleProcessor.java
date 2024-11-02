@@ -38,7 +38,7 @@ public class NotificationScheduleProcessor implements ScheduleProcessor {
                 // в случае достижения предельно допустимого количества ошибок
                 if (order.getNotificationAttemptCount() > MAX_ATTEMPT_COUNT) {
                     order.setProcessingStatus(ProcessingStatus.NOTIFICATION_ERROR);
-                    log.error("Notification error!");
+                    log.error("Notification error for {}!", order.getUser().getTelegramId());
                 }
             }
             //Сохранение состояния заказа

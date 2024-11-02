@@ -23,7 +23,7 @@ public class OrdersCheckUpdateScheduleProcessor implements ScheduleProcessor {
 
         for (UserEntity user: userEntityList) {
             //Обновление списка заказов
-            orderService.fetchAndSaveEntity(user);
+            orderService.loadAndSaveUserOrders(user);
         }
 
     }

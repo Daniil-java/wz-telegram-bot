@@ -25,7 +25,7 @@ public class OrderService {
     private final OpenAiService openAiService;
 
 
-    public void fetchAndSaveEntity(UserEntity user) {
+    public void loadAndSaveUserOrders(UserEntity user) {
         //Получение работающих заголовков
         HeaderData headerData = user.getAgreedHeader();
 

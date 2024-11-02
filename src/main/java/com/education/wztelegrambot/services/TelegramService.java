@@ -37,16 +37,6 @@ public class TelegramService {
         return sendReturnedMessage(chatId, text, null, null);
     }
 
-    public void sendMessage(long chatId, String text,
-                            ReplyKeyboard replyKeyboard, Integer replyMessageId) {
-
-        telegramBot.sendMessage(buildMessage(chatId, text, replyKeyboard, replyMessageId));
-    }
-
-    public void sendMessage(long chatId, String text) {
-        sendMessage(chatId, text, null, null);
-    }
-
     public Message sendOrder(Order order) {
         StringBuilder builder = new StringBuilder();
         builder.append("<strong>")
@@ -124,7 +114,7 @@ public class TelegramService {
 
     public void sendStartMessage(Long chatId) {
         String startMessage = "Этот бот предназначен для упрощения работы с различными фриланс сервисами";
-        sendMessage(chatId, startMessage, getStartReplyKeyboard(), null);
+        sendReturnedMessage(chatId, startMessage, getStartReplyKeyboard(), null);
 
     }
 
