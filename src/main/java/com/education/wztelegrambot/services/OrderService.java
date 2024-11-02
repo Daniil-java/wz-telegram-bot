@@ -25,21 +25,34 @@ public class OrderService {
     private final OpenAiService openAiService;
 
 
-    public void fetchAndSaveEntity(UserEntity user) {
+    public void loadAndSaveUserOrders(UserEntity user) {
+        //Получение работающих заголовков
         HeaderData headerData = user.getAgreedHeader();
+
         try {
+
+            //Загрузка новых заказов
             List<OrderWzDto> orderWzDtoList = wzService.loadOrders(headerData);
             log.info("Count of load orders: {}", orderWzDtoList.size());
+
             if (orderWzDtoList != null) {
+
+                //Обработка новых заказов
                 for (OrderWzDto orderWzDto: orderWzDtoList) {
-                    if (!orderRepository.findByWzId(orderWzDto.getId()).isPresent()) {
+
+                    //Сохранение новых заказов, в случае отстутствия дубликатов
+                    if (!orderRepository.findByWzIdAndUser(orderWzDto.getId(), user).isPresent()) {
+
                         orderRepository.save(Order.convert(orderWzDto)
-                                .setProcessingStatus(ProcessingStatus.CREATED));
+                                .setProcessingStatus(ProcessingStatus.CREATED)
+                                .setUser(user));
                     }
                 }
             }
         } catch (IOException e) {
             log.error("Orders update error!", e);
+
+            //Увеличение счетчика допустимых ошибок в хедере
             headersService.increaseHeaderLoadAttemptCount(headerData);
         }
 

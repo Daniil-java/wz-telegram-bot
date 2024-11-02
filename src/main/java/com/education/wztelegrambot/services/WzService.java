@@ -51,4 +51,13 @@ public class WzService {
                 orderDataWzDto.getData().getOther().stream()
         ).collect(Collectors.toList());
     }
+
+    public Boolean checkHeaders(HeaderData headerData) {
+        try {
+            loadOrders(headerData);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
 }
