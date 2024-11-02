@@ -2,6 +2,7 @@ package com.education.wztelegrambot.repositories;
 
 import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.entities.ProcessingStatus;
+import com.education.wztelegrambot.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByWzId(Long wzId);
+
+    Optional<Order> findByWzIdAndUser(Long wzId, UserEntity user);
 
     List<Order> findAllByProcessingStatus(ProcessingStatus processingStatus);
 

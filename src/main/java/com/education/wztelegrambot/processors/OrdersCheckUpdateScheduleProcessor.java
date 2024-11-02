@@ -18,9 +18,11 @@ public class OrdersCheckUpdateScheduleProcessor implements ScheduleProcessor {
 
     @Override
     public void process() {
+        //Получение списка всех пользователей
         List<UserEntity> userEntityList = userService.getAll();
 
         for (UserEntity user: userEntityList) {
+            //Обновление списка заказов
             orderService.fetchAndSaveEntity(user);
         }
 
