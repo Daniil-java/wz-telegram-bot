@@ -14,6 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final OpenAiService openAiService;
 
     @Transactional
     public UserEntity getOrCreateUser(User userInfo) {
@@ -43,4 +44,8 @@ public class UserService {
     }
 
 
+    public String setFilter(UserEntity userEntity, String filter) {
+        userRepository.save(userEntity.setFilter(filter));
+        return openAiService.analyzeFilter(filter);
+    }
 }

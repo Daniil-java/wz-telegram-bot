@@ -11,5 +11,6 @@ public enum ProcessingStatus {
     NOTIFICATED,
     NOTIFICATION_ERROR,
     APPLIED,
-    REJECTED;
+    REJECTED,
+    NOT_MATCHING_FILTER;
 }

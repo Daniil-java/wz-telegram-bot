@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 public class WzService {
     private final static String DEFAULT_URL = "https://client.work-zilla.com/api/order/v4/list/open?hideInsolvoOrders=false";
 
+    public static final String URL = "https://client.work-zilla.com/freelancer/";
     //Загрузка заказов при помощи Jsoup
     public List<OrderWzDto> loadOrders(HeaderData headerData) throws IOException {
         if (headerData == null) {
@@ -53,11 +54,12 @@ public class WzService {
     }
 
     public Boolean checkHeaders(HeaderData headerData) {
+        boolean result;
         try {
-            loadOrders(headerData);
+            result = loadOrders(headerData) != null;
         } catch (IOException e) {
             return false;
         }
-        return true;
+        return result;
     }
 }
