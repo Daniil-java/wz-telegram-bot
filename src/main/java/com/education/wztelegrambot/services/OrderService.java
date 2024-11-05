@@ -62,17 +62,16 @@ public class OrderService {
         //Запрос к OpenAI на анализ заказа
         OpenAiAnalyzeResponseDto openAiAnalyzeResponseDto = openAiService.analyzeOrder(order);
 
-        //Проверка фильтра
-        if (order.getUser().getFilter() == null ||
-                (order.getUser().getFilter() != null &&
-                        openAiAnalyzeResponseDto.getIsMatchingFilter())
-        ) {
-            order.setDevelopment(openAiAnalyzeResponseDto.getIsDevelopment())
-                    .setSolvableByAi(openAiAnalyzeResponseDto.getIsSolvableByAi())
-                    .setProcessingStatus(ProcessingStatus.ANALYZED);
+        order.setDevelopment(openAiAnalyzeResponseDto.getIsDevelopment())
+                .setSolvableByAi(openAiAnalyzeResponseDto.getIsSolvableByAi())
+                .setMatchingFilter(openAiAnalyzeResponseDto.getIsMatchingFilter());
+
+        if (openAiAnalyzeResponseDto.getIsMatchingFilter()) {
+            order.setProcessingStatus(ProcessingStatus.ANALYZED);
         } else {
             order.setProcessingStatus(ProcessingStatus.NOT_MATCHING_FILTER);
         }
+
         return orderRepository.save(order);
     }
 

@@ -34,6 +34,7 @@ public class Order {
     private long status;
     private boolean isDevelopment;
     private boolean isSolvableByAi;
+    private boolean isMatchingFilter;
     @Enumerated(EnumType.STRING)
     private ProcessingStatus processingStatus;
     @UpdateTimestamp
