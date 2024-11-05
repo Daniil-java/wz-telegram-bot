@@ -1,10 +1,15 @@
 package com.education.wztelegrambot.entities;
 
 import com.education.wztelegrambot.dtos.OrderWzDto;
+import com.education.wztelegrambot.services.WzService;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
@@ -17,6 +22,7 @@ public class Order {
     private Long id;
 
     private Long wzId;
+    private String url;
     private long categoryId;
     private String subject;
     private long customerId;
@@ -30,6 +36,11 @@ public class Order {
     private boolean isSolvableByAi;
     @Enumerated(EnumType.STRING)
     private ProcessingStatus processingStatus;
+    @UpdateTimestamp
+    private LocalDateTime updated;
+    @CreationTimestamp
+    private LocalDateTime created;
+
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -49,6 +60,8 @@ public class Order {
                 .setArchived(orderWzDto.isArchived())
                 .setChatClosed(orderWzDto.isChatClosed())
                 .setPrice(orderWzDto.getPrice())
-                .setStatus(orderWzDto.getStatus());
+                .setStatus(orderWzDto.getStatus())
+                .setUrl(WzService.URL + orderWzDto.getId())
+                ;
     }
 }

@@ -4,6 +4,7 @@ import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.entities.ProcessingStatus;
 import com.education.wztelegrambot.telegram.TelegramBot;
 import com.education.wztelegrambot.telegram.handlers.CoverLetterCallbackUpdateHandler;
+import com.education.wztelegrambot.telegram.handlers.FilterUpdateHandler;
 import com.education.wztelegrambot.telegram.handlers.UserVariablesUpdateHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,8 @@ public class TelegramService {
                 .append("</strong>")
                 .append("\n");
 
+        builder.append(order.getUrl()).append("\n");
+
         builder.append(convertMillisToDaysHours(order.getDuration()))
                 .append("\n")
                 .append(order.getPrice())
@@ -90,26 +93,13 @@ public class TelegramService {
     }
 
     public void sendErrorMessage(Long chatId) {
-        telegramBot.sendReturnedMessage(
-                SendMessage.builder()
-                        .chatId(chatId)
-                        .text("Произошла ошибка")
-                        .parseMode(ParseMode.HTML)
-                        .disableWebPagePreview(true)
-                        .build()
-        );
+        sendErrorMessage(chatId);
     }
 
     public void sendErrorMessage(Long chatId, Integer replyMessageId) {
+        String error = "Произошла ошибка";
          telegramBot.sendReturnedMessage(
-                SendMessage.builder()
-                        .chatId(chatId)
-                        .text("Произошла ошибка")
-                        .replyToMessageId(replyMessageId)
-                        .parseMode(ParseMode.HTML)
-                        .disableWebPagePreview(true)
-                        .build()
-        );
+                 buildMessage(chatId, error, null, replyMessageId));
     }
 
     public void sendStartMessage(Long chatId) {
@@ -123,6 +113,7 @@ public class TelegramService {
 
         KeyboardRow keyboardButtons = new KeyboardRow();
         keyboardButtons.add(UserVariablesUpdateHandler.USER_VARIABLES_HANDLER_COMMAND + TelegramBot.DELIMITER + "clear");
+        keyboardButtons.add(FilterUpdateHandler.FILTER_HANDLER_COMMAND + TelegramBot.DELIMITER + FilterUpdateHandler.FILTER_CLEAR_COMMAND);
 
         keyboardMarkup.setKeyboard(Collections.singletonList(keyboardButtons));
 

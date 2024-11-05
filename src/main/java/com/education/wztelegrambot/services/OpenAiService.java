@@ -26,11 +26,14 @@ public class OpenAiService {
                 "Я отправляю тебе описание заказа. " +
                         "Тебе нужно ответить в JSON-формате. И ничего кроме него.\n" +
                         "Используй только текстовое сообщение, без чего-то подобного ```json" +
-                        "Тебе нужно ответить на 2 вопроса, по данному заказу. " +
-                        "1: Относится ли данный заказ к IT, разработке. (JSON: 'isDevelopment : boolean')" +
-                        "2. Сможешь ли ты, самостоятельно выполнить этот заказ. (JSON: 'isSolvableByAi : boolean')\n" +
+                        "Тебе нужно ответить на 3 вопроса, по данному заказу. " +
+                        "1: Соответствует ли заказ фильтру (JSON: 'isMatchingFilter : boolean') " +
+                        "Если фильтр пустой, он должен быть отмечен, как true" +
+                        "2: Относится ли данный заказ к IT, разработке. (JSON: 'isDevelopment : boolean')" +
+                        "3. Сможешь ли ты, самостоятельно выполнить этот заказ. (JSON: 'isSolvableByAi : boolean')\n" +
+                        "Фильтр: %s\n" +
                         "Название заказа: %s\n" +
-                        "Описание: %s", order.getSubject(), order.getDescription());
+                        "Описание: %s", order.getUser().getFilter(), order.getSubject(), order.getDescription());
 
         return fetchResponseAndReadJson(request, OpenAiAnalyzeResponseDto.class);
 
@@ -48,6 +51,18 @@ public class OpenAiService {
                         "Награда за задание в руб: %s" +
                         "Обо мне: %s",
                 order.getSubject(), order.getDescription(), order.getDuration(), order.getPrice(), userInfo);
+
+        return fetchResponse(request);
+    }
+
+    public String analyzeFilter(String filter) {
+        String request = String.format(
+                "В будущем, я буду отправлять тебе задачи и их описания. " +
+                        "Сейчас я отправлю тебе фильтр, которому должны соответствовать задания. \n" +
+                        "%s\n" +
+                        "Опиши как ты понял фильтр. Какие задачи ты будешь считать соответствующими фильтру",
+                filter
+        );
 
         return fetchResponse(request);
     }

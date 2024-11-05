@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class OpenAiAnalyzeResponseDto {
+    private Boolean isMatchingFilter;
     private Boolean isDevelopment;
     private Boolean isSolvableByAi;
 }

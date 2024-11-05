@@ -61,11 +61,19 @@ public class OrderService {
     public Order analyzeAndUpdateOrder(Order order) throws JsonProcessingException {
         //Запрос к OpenAI на анализ заказа
         OpenAiAnalyzeResponseDto openAiAnalyzeResponseDto = openAiService.analyzeOrder(order);
-        return orderRepository.save(order
-                .setDevelopment(openAiAnalyzeResponseDto.getIsDevelopment())
-                .setSolvableByAi(openAiAnalyzeResponseDto.getIsSolvableByAi())
-                .setProcessingStatus(ProcessingStatus.ANALYZED)
-        );
+
+        //Проверка фильтра
+        if (order.getUser().getFilter() == null ||
+                (order.getUser().getFilter() != null &&
+                        openAiAnalyzeResponseDto.getIsMatchingFilter())
+        ) {
+            order.setDevelopment(openAiAnalyzeResponseDto.getIsDevelopment())
+                    .setSolvableByAi(openAiAnalyzeResponseDto.getIsSolvableByAi())
+                    .setProcessingStatus(ProcessingStatus.ANALYZED);
+        } else {
+            order.setProcessingStatus(ProcessingStatus.NOT_MATCHING_FILTER);
+        }
+        return orderRepository.save(order);
     }
 
     public List<Order> getOrdersForAnalysis() {

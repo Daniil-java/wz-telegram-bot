@@ -26,6 +26,7 @@ public class UserEntity {
     private String lastname;
     private String languageCode;
     private String info;
+    private String filter;
     @CreationTimestamp
     private LocalDateTime created;
 
