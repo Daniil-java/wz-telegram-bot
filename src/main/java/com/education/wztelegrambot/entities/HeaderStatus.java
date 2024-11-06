@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 public enum HeaderStatus {
     OK,
-    ERROR;
+    ERROR,
+    REJECT;
 }

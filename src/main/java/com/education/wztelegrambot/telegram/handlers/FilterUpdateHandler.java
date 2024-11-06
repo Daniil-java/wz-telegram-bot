@@ -29,7 +29,7 @@ public class FilterUpdateHandler implements UpdateHandler {
         if (splitted.length == 1) {
             answer = "Вам нужно указать фильтр!";
         } else if (splitted[1].equals(FILTER_CLEAR_COMMAND)) {
-            userService.save(userEntity.setFilter(null));
+            userService.resetFilter(userEntity);
             answer = "Фильтр очищен!";
         } else {
             answer = userService.setFilter(userEntity, splitted[1]);

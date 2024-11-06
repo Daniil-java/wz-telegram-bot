@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class OrderService {
 
             //Загрузка новых заказов
             List<OrderWzDto> orderWzDtoList = wzService.loadOrders(headerData);
-            log.info("Count of load orders: {}", orderWzDtoList.size());
+            log.info("Count of load orders: {}", orderWzDtoList != null ? orderWzDtoList.size() : 0);
 
             if (orderWzDtoList != null) {
 
@@ -99,5 +100,15 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .map(order -> openAiService.generateCoverLetter(order, info))
                 .orElse(null);
+    }
+
+    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user) {
+        LocalDateTime time = LocalDateTime.now().minusDays(1);
+        orderRepository.updateOrderStatusByUserAndStatus(
+                user,
+                ProcessingStatus.NOT_MATCHING_FILTER,
+                ProcessingStatus.ANALYZED,
+                time
+        );
     }
 }

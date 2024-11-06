@@ -15,6 +15,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final OpenAiService openAiService;
+    private final OrderService orderService;
 
     @Transactional
     public UserEntity getOrCreateUser(User userInfo) {
@@ -47,5 +48,10 @@ public class UserService {
     public String setFilter(UserEntity userEntity, String filter) {
         userRepository.save(userEntity.setFilter(filter));
         return openAiService.analyzeFilter(filter);
+    }
+
+    public UserEntity resetFilter(UserEntity user) {
+        orderService.updateNotMatchingOrdersProcessingStatusByUser(user);
+        return userRepository.save(user.setFilter(null));
     }
 }

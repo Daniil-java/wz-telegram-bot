@@ -4,15 +4,17 @@ import com.education.wztelegrambot.entities.HeaderData;
 import com.education.wztelegrambot.entities.HeaderStatus;
 import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.repositories.HeadersRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class HeadersService {
-
-    private final HeadersRepository headersRepository;
-    private final TelegramService telegramService;
+    @Autowired
+    private HeadersRepository headersRepository;
+    @Lazy
+    @Autowired
+    private TelegramService telegramService;
 
     private final static int MAX_EXCEPTION = 5;
 
@@ -37,6 +39,6 @@ public class HeadersService {
     }
 
     public void removeAllByUserId(UserEntity user) {
-        headersRepository.deleteAllByUser(user);
+        headersRepository.updateHeaderStatusByUser(HeaderStatus.REJECT, user);
     }
 }
