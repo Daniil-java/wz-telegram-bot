@@ -5,14 +5,14 @@ import com.education.wztelegrambot.entities.ProcessingStatus;
 import com.education.wztelegrambot.services.OrderService;
 import com.education.wztelegrambot.services.TelegramService;
 import com.education.wztelegrambot.telegram.utils.ThreadUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class NotificationScheduleProcessor implements ScheduleProcessor {
     private final OrderService orderService;

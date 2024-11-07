@@ -17,6 +17,6 @@ public interface HeadersRepository extends JpaRepository<HeaderData, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE HeaderData h SET h.headerStatus = :status WHERE h.user = :user")
-    void updateHeaderStatusByUser(@Param("status") HeaderStatus status, @Param("user") UserEntity user);
+    void updateHeaderStatusByUser(@Param("user") UserEntity user, @Param("status") HeaderStatus status);
 
 }

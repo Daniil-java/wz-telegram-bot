@@ -7,13 +7,13 @@ import com.education.wztelegrambot.services.HeadersService;
 import com.education.wztelegrambot.services.TelegramService;
 import com.education.wztelegrambot.services.WzService;
 import com.education.wztelegrambot.telegram.TelegramBot;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserVariablesUpdateHandler implements UpdateHandler {
     private final static String RESPONSE = "Переменная сохранена";
     private final TelegramService telegramService;

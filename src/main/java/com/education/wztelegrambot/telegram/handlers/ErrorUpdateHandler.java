@@ -2,13 +2,13 @@ package com.education.wztelegrambot.telegram.handlers;
 
 import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.services.TelegramService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 //Обработчик непродусмотренных сообщений
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ErrorUpdateHandler implements UpdateHandler {
     private final static String RESPONSE = "Данный запрос непредусмотрен сервисом.";
     public final static String ERROR_HANDLER_COMMAND = "/about";

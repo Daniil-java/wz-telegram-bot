@@ -1,9 +1,9 @@
 package com.education.wztelegrambot.entities;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public enum HeaderStatus {
     OK,

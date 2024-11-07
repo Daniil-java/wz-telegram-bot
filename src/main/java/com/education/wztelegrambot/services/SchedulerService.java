@@ -3,13 +3,13 @@ package com.education.wztelegrambot.services;
 import com.education.wztelegrambot.processors.NotificationScheduleProcessor;
 import com.education.wztelegrambot.processors.OpenAiScheduleProcessor;
 import com.education.wztelegrambot.processors.OrdersCheckUpdateScheduleProcessor;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class SchedulerService {
     private final OrdersCheckUpdateScheduleProcessor ordersCheckUpdateScheduleProcessor;

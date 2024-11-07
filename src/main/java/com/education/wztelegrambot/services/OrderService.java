@@ -8,7 +8,7 @@ import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.dtos.OrderWzDto;
 import com.education.wztelegrambot.repositories.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class OrderService {
     private final WzService wzService;
@@ -102,12 +102,12 @@ public class OrderService {
                 .orElse(null);
     }
 
-    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user) {
+    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user, ProcessingStatus newStatus) {
         LocalDateTime time = LocalDateTime.now().minusDays(1);
         orderRepository.updateOrderStatusByUserAndStatus(
                 user,
                 ProcessingStatus.NOT_MATCHING_FILTER,
-                ProcessingStatus.ANALYZED,
+                newStatus,
                 time
         );
     }
