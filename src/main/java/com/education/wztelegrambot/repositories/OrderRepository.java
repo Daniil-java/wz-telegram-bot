@@ -39,4 +39,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("currentStatus") ProcessingStatus currentStatus,
             @Param("newStatus") ProcessingStatus newStatus,
             @Param("timePeriod") LocalDateTime timePeriod);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Order o SET o.processingStatus = :newStatus, " +
+            "o.isMatchingFilter = true " +
+            "WHERE o.user = :user " +
+            "AND o.processingStatus = 'NOT_MATCHING_FILTER' " +
+            "AND o.created >= :timePeriod")
+    void updateNotMatchingOrdersForNotificationByUser(
+            @Param("user") UserEntity user,
+            @Param("newStatus") ProcessingStatus newStatus,
+            @Param("timePeriod") LocalDateTime timePeriod);
 }

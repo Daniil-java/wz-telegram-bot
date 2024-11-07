@@ -2,6 +2,8 @@ package com.education.wztelegrambot.telegram.handlers;
 
 import com.education.wztelegrambot.entities.ProcessingStatus;
 import com.education.wztelegrambot.entities.UserEntity;
+import com.education.wztelegrambot.services.OpenAiService;
+import com.education.wztelegrambot.services.OrderService;
 import com.education.wztelegrambot.services.TelegramService;
 import com.education.wztelegrambot.services.UserService;
 import com.education.wztelegrambot.telegram.TelegramBot;
@@ -17,6 +19,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class FilterUpdateHandler implements UpdateHandler {
     private final UserService userService;
     private final TelegramService telegramService;
+    private final OpenAiService openAiService;
+    private final OrderService orderService;
     public static final String FILTER_HANDLER_COMMAND = "/filter";
     public static final String FILTER_CLEAR_COMMAND = "clear";
     public static final String FILTER_APPLY_COMMAND = "apply";
@@ -41,17 +45,18 @@ public class FilterUpdateHandler implements UpdateHandler {
 
         //При положительном ответе, произойдет отправка, в зависимости от предыдущего значения фильтра
         if (decision.equals(FILTER_APPLY_COMMAND)) {
-
+            ProcessingStatus processingStatus;
             //Если новой фильтр является пустым
             if (splitted.length < 3) {
 
                 //При статусе ANALYZED, заказы не будут повторно проверены AI
-                userService.resetFilter(userEntity, ProcessingStatus.ANALYZED);
+                //Поле isMatchingFilter изменит значение на true
+                orderService.updateNotMatchingOrdersForNotificationByUser(userEntity);
 
             } else {
 
                 //Заказы будут проверены повторно, с учетом нового фильтра
-                userService.updateNotMatchingOrdersProcessingStatusByUser(userEntity, ProcessingStatus.CREATED);
+                orderService.updateNotMatchingOrdersProcessingStatusForReAnalyzeByUser(userEntity);
             }
         }
 
@@ -73,24 +78,26 @@ public class FilterUpdateHandler implements UpdateHandler {
 
             //Запрос на очистку фильтра
         } else if (splitted[1].equals(FILTER_CLEAR_COMMAND)) {
-
-            //Если фильтр не был пустым, запросит проверку пропущенных
-            if (userEntity.getFilter() != null) {
+            if (userEntity.getFilter() == null) {
+                answer = "Фильтр уже пуст!";
+            } else {
+                userService.clearFilter(userEntity);
+                answer = "Фильтр очищен!";
                 telegramService.sendMessageAfterFilterReset(userEntity, null);
-                return;
             }
-            answer = "Фильтр очищен!";
 
-
+            //Установка нового фильтра
         } else {
-
             //Если фильтр не был пустым, запросит проверку пропущенных, с учетом нового фильтра
             if (userEntity.getFilter() != null) {
                 telegramService.sendMessageAfterFilterReset(userEntity, FILTER_NEW_COMMAND);
             }
 
             //Если фильтр ранее был null, нет необходимости проверять, ранее непрошидшие фильтр, заказы
-            answer = userService.setFilter(userEntity, splitted[1]);
+            userEntity = userService.setFilter(userEntity, splitted[1]);
+
+            //Запрос к OpenAI на понимание нового фильтра
+            answer = openAiService.analyzeFilter(userEntity.getFilter());
 
         }
 

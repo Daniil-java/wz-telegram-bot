@@ -102,12 +102,21 @@ public class OrderService {
                 .orElse(null);
     }
 
-    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user, ProcessingStatus newStatus) {
+    public void updateNotMatchingOrdersProcessingStatusForReAnalyzeByUser(UserEntity user) {
         LocalDateTime time = LocalDateTime.now().minusDays(1);
         orderRepository.updateOrderStatusByUserAndStatus(
                 user,
                 ProcessingStatus.NOT_MATCHING_FILTER,
-                newStatus,
+                ProcessingStatus.CREATED,
+                time
+        );
+    }
+
+    public void updateNotMatchingOrdersForNotificationByUser(UserEntity user) {
+        LocalDateTime time = LocalDateTime.now().minusDays(1);
+        orderRepository.updateNotMatchingOrdersForNotificationByUser(
+                user,
+                ProcessingStatus.ANALYZED,
                 time
         );
     }

@@ -46,19 +46,12 @@ public class UserService {
     }
 
 
-    public String setFilter(UserEntity userEntity, String filter) {
-        userRepository.save(userEntity.setFilter(filter));
-        return openAiService.analyzeFilter(filter);
-
+    public UserEntity setFilter(UserEntity userEntity, String filter) {
+        return userRepository.save(userEntity.setFilter(filter));
     }
 
-    public UserEntity resetFilter(UserEntity user, ProcessingStatus processingStatus) {
-        UserEntity userEntity = userRepository.save(user.setFilter(null));
-        updateNotMatchingOrdersProcessingStatusByUser(user, processingStatus);
-        return userEntity;
-    }
 
-    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user, ProcessingStatus newStatus) {
-        orderService.updateNotMatchingOrdersProcessingStatusByUser(user, newStatus);
+    public UserEntity clearFilter(UserEntity userEntity) {
+        return userRepository.save(userEntity.setFilter(null));
     }
 }
