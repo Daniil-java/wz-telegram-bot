@@ -67,7 +67,7 @@ public class TelegramService {
     }
 
     public Message sendMessageAfterFilterReset(UserEntity user, String command) {
-        return sendReturnedMessage(user.getChatId(), "Вывести пропущенные заказы за 24 часа?",
+        return sendReturnedMessage(user.getChatId(), "Пропустить ранее пропущенные, за 24 часа, через новый фильтр ?",
                 getButtonsAfterResetFilter(command), null);
     }
 

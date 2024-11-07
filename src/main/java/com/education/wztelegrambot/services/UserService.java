@@ -54,8 +54,11 @@ public class UserService {
 
     public UserEntity resetFilter(UserEntity user, ProcessingStatus processingStatus) {
         UserEntity userEntity = userRepository.save(user.setFilter(null));
-        orderService.updateNotMatchingOrdersProcessingStatusByUser(user, processingStatus);
+        updateNotMatchingOrdersProcessingStatusByUser(user, processingStatus);
         return userEntity;
+    }
 
+    public void updateNotMatchingOrdersProcessingStatusByUser(UserEntity user, ProcessingStatus newStatus) {
+        orderService.updateNotMatchingOrdersProcessingStatusByUser(user, newStatus);
     }
 }

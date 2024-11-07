@@ -38,22 +38,20 @@ public class FilterUpdateHandler implements UpdateHandler {
         String[] splitted = callbackQuery.getData().split(TelegramBot.DELIMITER);
 
         String decision = splitted[1];
-        //При отклонении предложения об отправке, ранее не прошедших фильтр, заказов
-        if (decision.equals(FILTER_REJECT_COMMAND)) {
-            userService.save(userEntity.setFilter(null));
 
-            //При положительном ответе, произойдет отправка, в зависимости от предыдущего значения фильтра
-        } else if (decision.equals(FILTER_APPLY_COMMAND)) {
+        //При положительном ответе, произойдет отправка, в зависимости от предыдущего значения фильтра
+        if (decision.equals(FILTER_APPLY_COMMAND)) {
 
-            //Если предыдущий фильтр был null
+            //Если новой фильтр является пустым
             if (splitted.length < 3) {
 
                 //При статусе ANALYZED, заказы не будут повторно проверены AI
                 userService.resetFilter(userEntity, ProcessingStatus.ANALYZED);
+
             } else {
 
                 //Заказы будут проверены повторно, с учетом нового фильтра
-                userService.resetFilter(userEntity, ProcessingStatus.CREATED);
+                userService.updateNotMatchingOrdersProcessingStatusByUser(userEntity, ProcessingStatus.CREATED);
             }
         }
 
@@ -69,20 +67,29 @@ public class FilterUpdateHandler implements UpdateHandler {
 
         String[] splitted = messageText.split(TelegramBot.DELIMITER);
 
+        //Базовая проверка корректности запроса
         if (splitted.length == 1) {
             answer = "Вам нужно указать фильтр!";
+
+            //Запрос на очистку фильтра
         } else if (splitted[1].equals(FILTER_CLEAR_COMMAND)) {
+
+            //Если фильтр не был пустым, запросит проверку пропущенных
             if (userEntity.getFilter() != null) {
                 telegramService.sendMessageAfterFilterReset(userEntity, null);
                 return;
             }
             answer = "Фильтр очищен!";
 
-        //Если фильтр ранее был null, нет необходимости проверять, ранее непрошидшие фильтр, заказы
+
         } else {
+
+            //Если фильтр не был пустым, запросит проверку пропущенных, с учетом нового фильтра
             if (userEntity.getFilter() != null) {
                 telegramService.sendMessageAfterFilterReset(userEntity, FILTER_NEW_COMMAND);
             }
+
+            //Если фильтр ранее был null, нет необходимости проверять, ранее непрошидшие фильтр, заказы
             answer = userService.setFilter(userEntity, splitted[1]);
 
         }
