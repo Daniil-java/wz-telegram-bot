@@ -45,7 +45,6 @@ public class FilterUpdateHandler implements UpdateHandler {
 
         //При положительном ответе, произойдет отправка, в зависимости от предыдущего значения фильтра
         if (decision.equals(FILTER_APPLY_COMMAND)) {
-            ProcessingStatus processingStatus;
             //Если новой фильтр является пустым
             if (splitted.length < 3) {
 
