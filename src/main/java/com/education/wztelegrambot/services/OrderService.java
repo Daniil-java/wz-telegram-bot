@@ -8,15 +8,16 @@ import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.dtos.OrderWzDto;
 import com.education.wztelegrambot.repositories.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class OrderService {
     private final WzService wzService;
@@ -33,7 +34,7 @@ public class OrderService {
 
             //Загрузка новых заказов
             List<OrderWzDto> orderWzDtoList = wzService.loadOrders(headerData);
-            log.info("Count of load orders: {}", orderWzDtoList.size());
+            log.info("Count of load orders: {}", orderWzDtoList != null ? orderWzDtoList.size() : 0);
 
             if (orderWzDtoList != null) {
 
@@ -99,5 +100,24 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .map(order -> openAiService.generateCoverLetter(order, info))
                 .orElse(null);
+    }
+
+    public void updateNotMatchingOrdersProcessingStatusForReAnalyzeByUser(UserEntity user) {
+        LocalDateTime time = LocalDateTime.now().minusDays(1);
+        orderRepository.updateOrderStatusByUserAndStatus(
+                user,
+                ProcessingStatus.NOT_MATCHING_FILTER,
+                ProcessingStatus.CREATED,
+                time
+        );
+    }
+
+    public void updateNotMatchingOrdersForNotificationByUser(UserEntity user) {
+        LocalDateTime time = LocalDateTime.now().minusDays(1);
+        orderRepository.updateNotMatchingOrdersForNotificationByUser(
+                user,
+                ProcessingStatus.ANALYZED,
+                time
+        );
     }
 }

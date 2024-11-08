@@ -2,14 +2,16 @@ package com.education.wztelegrambot.services;
 
 import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.entities.ProcessingStatus;
+import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.telegram.TelegramBot;
 import com.education.wztelegrambot.telegram.handlers.CoverLetterCallbackUpdateHandler;
 import com.education.wztelegrambot.telegram.handlers.FilterUpdateHandler;
 import com.education.wztelegrambot.telegram.handlers.UserVariablesUpdateHandler;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
@@ -23,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TelegramService {
 
     private final TelegramBot telegramBot;
@@ -62,6 +64,30 @@ public class TelegramService {
 
         return sendReturnedMessage(order.getUser().getTelegramId(), builder.toString(),
                 getOrderButtons(order.getId()), null);
+    }
+
+    public Message sendMessageAfterFilterReset(UserEntity user, String command) {
+        return sendReturnedMessage(user.getChatId(), "Пропустить ранее пропущенные, за 24 часа, через новый фильтр ?",
+                getButtonsAfterResetFilter(command), null);
+    }
+
+    private InlineKeyboardMarkup getButtonsAfterResetFilter(String command) {
+        command = command == null ? "" : TelegramBot.DELIMITER + command;
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton applyButton = new InlineKeyboardButton("Принять");
+        InlineKeyboardButton rejectButton = new InlineKeyboardButton("Отклонить");
+
+        applyButton.setCallbackData(FilterUpdateHandler.FILTER_HANDLER_COMMAND + TelegramBot.DELIMITER +
+                FilterUpdateHandler.FILTER_APPLY_COMMAND + command) ;
+        rejectButton.setCallbackData(FilterUpdateHandler.FILTER_HANDLER_COMMAND + TelegramBot.DELIMITER +
+                FilterUpdateHandler.FILTER_REJECT_COMMAND + command);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(Arrays.asList(applyButton, rejectButton));
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
     }
 
     private static String convertMillisToDaysHours(long millis) {
@@ -131,5 +157,12 @@ public class TelegramService {
                 .parseMode(ParseMode.HTML)
                 .disableWebPagePreview(true)
                 .build();
+    }
+
+    public void deleteMessage(Integer messageId, Long chatId) {
+        telegramBot.sendMessage(DeleteMessage.builder()
+                .messageId(messageId)
+                .chatId(chatId)
+                .build());
     }
 }

@@ -5,7 +5,7 @@ import com.education.wztelegrambot.dtos.OrderDataWzDto;
 import com.education.wztelegrambot.dtos.OrderWzDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class WzService {
     private final static String DEFAULT_URL = "https://client.work-zilla.com/api/order/v4/list/open?hideInsolvoOrders=false";

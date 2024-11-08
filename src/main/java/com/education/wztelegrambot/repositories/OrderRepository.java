@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +27,28 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Transactional
     @Query("UPDATE Order o SET o.processingStatus = :status WHERE o.id = :id")
     void updateStatusById(@Param("id") Long orderId, @Param("status") ProcessingStatus status);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Order o SET o.processingStatus = :newStatus " +
+            "WHERE o.user = :user " +
+            "AND o.processingStatus = :currentStatus " +
+            "AND o.created >= :timePeriod")
+    void updateOrderStatusByUserAndStatus(
+            @Param("user") UserEntity user,
+            @Param("currentStatus") ProcessingStatus currentStatus,
+            @Param("newStatus") ProcessingStatus newStatus,
+            @Param("timePeriod") LocalDateTime timePeriod);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Order o SET o.processingStatus = :newStatus, " +
+            "o.isMatchingFilter = true " +
+            "WHERE o.user = :user " +
+            "AND o.processingStatus = 'NOT_MATCHING_FILTER' " +
+            "AND o.created >= :timePeriod")
+    void updateNotMatchingOrdersForNotificationByUser(
+            @Param("user") UserEntity user,
+            @Param("newStatus") ProcessingStatus newStatus,
+            @Param("timePeriod") LocalDateTime timePeriod);
 }

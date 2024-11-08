@@ -5,14 +5,14 @@ import com.education.wztelegrambot.entities.UserEntity;
 import com.education.wztelegrambot.services.OrderService;
 import com.education.wztelegrambot.services.TelegramService;
 import com.education.wztelegrambot.telegram.TelegramBot;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 //Обработчик callback-запроса на генерацию сопроводительного письма
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CoverLetterCallbackUpdateHandler implements UpdateHandler{
     private static final String APPLIED_COMMAND = ProcessingStatus.APPLIED.name();
     private static final String REJECTED_COMMAND = ProcessingStatus.REJECTED.name();

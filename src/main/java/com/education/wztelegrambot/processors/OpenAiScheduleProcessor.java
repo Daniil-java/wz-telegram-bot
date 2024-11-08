@@ -4,14 +4,14 @@ import com.education.wztelegrambot.entities.Order;
 import com.education.wztelegrambot.services.OrderService;
 import com.education.wztelegrambot.telegram.utils.ThreadUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class OpenAiScheduleProcessor implements ScheduleProcessor {
     private final OrderService orderService;
